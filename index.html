@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<title>FeedMob Pixel Analytics — 立项计划</title>
+<style>
+:root {
+  --primary: #1c262f;
+  --accent:  #ea6969;
+  --accent2: #1b97be;
+  --bg:      #f6f8fa;
+  --card:    #ffffff;
+  --text:    #32404e;
+  --muted:   #4c5864;
+  --border:  #e1e3e5;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Lato', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
+  background: var(--bg); color: var(--text); line-height: 1.8; font-size: 15px;
+}
+
+/* ── Top lang bar ── */
+.topbar {
+  background: var(--primary); padding: 10px 40px;
+  display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+  position: sticky; top: 0; z-index: 100;
+}
+.lang-toggle {
+  display: flex; border-radius: 7px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,.3);
+}
+.lang-toggle button {
+  background: transparent; border: none; color: rgba(255,255,255,.75);
+  padding: 6px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+  transition: all .15s; letter-spacing: .3px;
+}
+.lang-toggle button.active {
+  background: rgba(255,255,255,.2); color: #fff;
+}
+.lang-toggle button:hover:not(.active) { background: rgba(255,255,255,.1); }
+
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, var(--primary) 0%, #32404e 55%, var(--accent2) 100%);
+  color: #fff; padding: 48px 48px 40px;
+}
+.header-meta { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: .55; margin-bottom: 10px; }
+header h1 { font-size: 30px; font-weight: 800; line-height: 1.2; margin-bottom: 8px; }
+.header-sub { font-size: 15px; opacity: .72; max-width: 640px; }
+.header-byline { margin-top: 16px; font-size: 13px; opacity: .6; }
+
+/* ── Main ── */
+main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
+
+/* ── Section ── */
+.section {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 32px 36px; margin-bottom: 20px;
+  box-shadow: 0 4px 14px rgba(28,38,47,.06);
+}
+.section-tag {
+  font-size: 14px; font-weight: 800;
+  color: var(--accent); margin-bottom: 10px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-tag::before {
+  content: ''; display: inline-block; width: 4px; height: 16px;
+  background: var(--accent); border-radius: 2px; flex-shrink: 0;
+}
+.section h2 { font-size: 19px; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
+.section p  { color: var(--text); margin-bottom: 10px; }
+.section p:last-child { margin-bottom: 0; }
+
+/* ── Bullet list ── */
+.blist { list-style: none; padding: 0; margin: 8px 0; }
+.blist li {
+  padding: 6px 0 6px 18px; position: relative;
+  border-bottom: 1px solid var(--border); color: var(--text);
+}
+.blist li:last-child { border-bottom: none; }
+.blist li::before {
+  content: ''; position: absolute; left: 0; top: 15px;
+  width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+}
+
+/* ── Capability cards ── */
+.cap-list { display: flex; flex-direction: column; gap: 10px; margin: 12px 0; }
+.cap-item { display: flex; gap: 14px; padding: 14px 16px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); }
+.cap-num {
+  flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent2); color: #fff; font-size: 12px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center; margin-top: 2px;
+}
+.cap-body { flex: 1; }
+.cap-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+.cap-body p { font-size: 13px; color: var(--muted); line-height: 1.65; margin: 0; }
+
+/* ── Two columns ── */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+.mini-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
+.mini-card h3 { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.mini-card p  { font-size: 13px; color: var(--muted); line-height: 1.65; margin: 0; }
+
+/* ── Section note ── */
+.section-note {
+  margin-top: 14px; padding: 12px 16px; border-radius: 6px;
+  background: #fff7f9; border-left: 4px solid #ea6969;
+  font-size: 13px; color: #555; line-height: 1.7;
+}
+
+/* ── Table ── */
+.data-table { display: table; width: 100%; border-collapse: collapse; font-size: 14px; }
+.data-table thead { display: table-header-group; }
+.data-table tbody { display: table-row-group; }
+.data-table tr    { display: table-row; }
+.data-table th, .data-table td { display: table-cell; }
+.data-table th {
+  background: var(--bg); text-align: left; padding: 10px 14px;
+  font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--muted); border-bottom: 2px solid var(--border); font-weight: 700;
+}
+.data-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table td:first-child { font-weight: 700; color: var(--primary); white-space: nowrap; }
+
+/* ── Phases ── */
+.phase { display: flex; gap: 16px; }
+.phase-spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.phase-dot {
+  width: 34px; height: 34px; border-radius: 50%; background: var(--accent2);
+  color: #fff; font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.phase-dot.core { background: var(--accent); }
+.phase-connector { flex: 1; width: 2px; background: var(--border); margin: 4px 0; min-height: 20px; }
+.phase:last-child .phase-connector { display: none; }
+.phase-body { flex: 1; padding-bottom: 26px; padding-top: 4px; }
+.phase-badge {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; background: #e8f5fb; color: #1b97be;
+  padding: 2px 10px; border-radius: 20px; margin-bottom: 7px;
+}
+.phase-badge.core { background: #fff1f1; color: #ea6969; }
+.phase-body h3 { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+.phase-body p  { font-size: 14px; color: var(--muted); line-height: 1.65; margin: 0; }
+
+/* ── Team ── */
+.team-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.team-card { border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; background: var(--bg); }
+.team-card .role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
+.team-card .name { font-size: 19px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+.team-card p { font-size: 13px; color: var(--muted); }
+
+/* ── Criteria ── */
+.crit-group { margin-bottom: 18px; }
+.crit-group:last-child { margin-bottom: 0; }
+.crit-label { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.crit-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
+.crit-group .crit-item:last-child { border-bottom: none; }
+.crit-box {
+  flex-shrink: 0; width: 18px; height: 18px; border-radius: 4px;
+  border: 2px solid var(--border); margin-top: 2px;
+  display: flex; align-items: center; justify-content: center;
+  background: #fff; transition: all .15s;
+}
+.crit-item.done .crit-box { background: #00b5ad; border-color: #00b5ad; }
+.crit-item.done .crit-box::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 800; }
+.crit-item.done span { text-decoration: line-through; color: var(--muted); }
+.crit-item span { font-size: 14px; color: var(--text); flex: 1; }
+
+@media(max-width:640px){
+  header { padding: 32px 20px 28px; }
+  .two-col, .team-row { grid-template-columns: 1fr; }
+  .section { padding: 22px 18px; }
+  .topbar { padding: 8px 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- sticky lang bar -->
+<div class="topbar">
+  <div class="lang-toggle">
+    <button id="btn-zh" class="active" onclick="setLang('zh')">中文</button>
+    <button id="btn-en" onclick="setLang('en')">English</button>
+  </div>
+</div>
+
+<header>
+  <div class="header-meta">
+    <span class="L-zh">项目立项计划 · 2026年3月17日</span>
+    <span class="L-en" hidden>PROJECT PROPOSAL · MARCH 17, 2026</span>
+  </div>
+  <h1>FeedMob Pixel Analytics</h1>
+  <div class="header-sub">
+    <span class="L-zh">将沉睡的 Pixel 数据转化为一个主动发现机会、推动业务决策的 AI 原生分析平台</span>
+    <span class="L-en" hidden>Transforming dormant Pixel data into an AI-native platform that proactively surfaces opportunities and drives business decisions</span>
+  </div>
+  <div class="header-byline">
+    <span class="L-zh">项目 Owner: Alyssa &nbsp;·&nbsp; 后端开发: Yongcheng &nbsp;·&nbsp; 2026年3月17日</span>
+    <span class="L-en" hidden>Project Owner: Alyssa &nbsp;·&nbsp; Backend Dev: Yongcheng &nbsp;·&nbsp; March 17, 2026</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ① -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">一、背景</span><span class="L-en" hidden>I. Background</span>
+  </div>
+  <div class="L-zh">
+    <h2>FeedMob Pixel 是什么</h2>
+    <p>FeedMob Pixel 是公司内部开发团队构建的 Web 端归因工具。广告主将一段代码嵌入自己的网页，FeedMob 即可识别来自自身渠道的流量，并在用户发生行为时完成转化归因——相当于在 Web 端充当自己的 Attribution Partner。</p>
+    <p>该工具最早服务于 Display Ads 时代，主要客户为 Chime。当时归因逻辑相对简单，背后积累的海量数据也从未被深度挖掘。</p>
+  </div>
+  <div class="L-en" hidden>
+    <h2>What is FeedMob Pixel</h2>
+    <p>FeedMob Pixel is a web-based attribution tool built by our internal engineering team. Advertisers embed a code snippet on their web pages, enabling FeedMob to identify traffic from its own channels and attribute conversions when user actions occur — effectively making FeedMob its own Attribution Partner on the web side.</p>
+    <p>The tool was originally built during the Display Ads era, primarily serving Chime. Attribution logic was straightforward at the time, and the substantial data it accumulated was never deeply analyzed.</p>
+  </div>
+</div>
+
+<!-- ② -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">二、为什么现在要做</span><span class="L-en" hidden>II. Why Now</span>
+  </div>
+  <div class="L-zh">
+    <h2>CTV 带来的新机遇</h2>
+    <p>随着 FeedMob 进入 CTV 领域（合作伙伴包括 Samsung CTV、LG、Pragmatic 等），Pixel 的战略价值发生了根本性转变。</p>
+    <div class="two-col">
+      <div class="mini-card">
+        <h3>CTV 跨设备归因困境</h3>
+        <p>用户在电视上看到广告，但转化发生在手机或电脑上。广告曝光与转化设备完全分离，传统归因几乎失效。App 端有 MMP（如 AppsFlyer），但 Web 端对 CTV 的归因几乎是空白。</p>
+      </div>
+      <div class="mini-card">
+        <h3>被忽视的价值：竞争情报</h3>
+        <p>Pixel 不只采集 FeedMob 渠道的转化，还有广告主网页上所有用户的行为（all-ping 数据）。这意味着我们能看到竞争对手 CTV 渠道的转化效果——极具价值的市场情报，此前从未被挖掘。</p>
+      </div>
+    </div>
+  </div>
+  <div class="L-en" hidden>
+    <h2>The CTV Opportunity</h2>
+    <p>As FeedMob enters the CTV space — with partners including Samsung CTV, LG, and Pragmatic — the strategic value of Pixel has fundamentally shifted.</p>
+    <div class="two-col">
+      <div class="mini-card">
+        <h3>CTV Cross-Device Attribution Gap</h3>
+        <p>Users see ads on TV but convert on mobile or desktop. Exposure and conversion devices are completely separated, making traditional attribution nearly useless. Apps have MMPs (e.g. AppsFlyer), but web-side CTV attribution is essentially a blank slate.</p>
+      </div>
+      <div class="mini-card">
+        <h3>Overlooked Value: Competitive Intelligence</h3>
+        <p>Pixel captures not only FeedMob-attributed conversions, but all user behavior on advertiser pages (all-ping data). This means we can analyze competing CTV channels' performance — highly valuable market intelligence that has never been extracted.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">三、现状与问题</span><span class="L-en" hidden>III. Current State</span>
+  </div>
+  <div class="L-zh">
+    <h2>数据沉睡在数据库里</h2>
+    <p>Pixel 每天采集的数据，目前全部存储在 PostgreSQL 数据库中，处于完全沉睡的状态：</p>
+    <ul class="blist">
+      <li>没有可视化界面</li>
+      <li>没有实时查询能力</li>
+      <li>没有归因分析逻辑</li>
+      <li>没有对竞争对手数据的挖掘</li>
+    </ul>
+    <p style="margin-top:10px;">数据有巨大的商业价值，却还没有得到有效使用。</p>
+  </div>
+  <div class="L-en" hidden>
+    <h2>Data Locked in the Database</h2>
+    <p>Pixel collects data daily, all of which currently sits in a PostgreSQL database, completely dormant:</p>
+    <ul class="blist">
+      <li>No visualization layer</li>
+      <li>No real-time query capability</li>
+      <li>No attribution analysis logic</li>
+      <li>No competitive data extraction</li>
+    </ul>
+    <p style="margin-top:10px;">The data holds enormous business value — and none of it is currently being used.</p>
+  </div>
+</div>
+
+<!-- ④ -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">四、我们要做什么</span><span class="L-en" hidden>IV. What We're Building</span>
+  </div>
+  <div class="L-zh">
+    <h2>AI 原生分析平台</h2>
+    <p>目标：构建一个 AI 原生的 Pixel 数据分析平台——不只是让人"可以查数据"，而是一个<strong>持续运转的 AI 分析师</strong>，主动发现异常和机会，推动行动，并持续优化自身的归因模型。</p>
+    <p style="margin-bottom:10px;">平台具备三个层次的能力：</p>
+    <div class="cap-list">
+      <div class="cap-item"><div class="cap-num">1</div><div class="cap-body"><strong>响应式分析（基础层）</strong><p>业务团队可以用自然语言实时查询 Pixel 数据，AI 动态生成分析视图，替代传统固定 Dashboard。</p></div></div>
+      <div class="cap-item"><div class="cap-num">2</div><div class="cap-body"><strong>主动发现（核心层）</strong><p>AI 不等人来问，24 小时持续监测数据，主动推送异常警报和商业机会：某 partner 转化率异常下降、某广告主 CTV 流量激增但预算未跟上（upsell 信号）、竞品渠道出现新的高转化模式等。</p></div></div>
+      <div class="cap-item"><div class="cap-num">3</div><div class="cap-body"><strong>行动驱动（价值层）</strong><p>AI 不止于"告诉你发生了什么"，而是直接生成可执行的行动建议和素材：为 AM 自动准备 CTV 归因 vs. 竞品对比的客户汇报；为 BD 识别竞品表现不佳的广告主，生成 outreach 话术；为 Product 推荐归因模型参数调整方案。</p></div></div>
+    </div>
+    <div class="section-note">
+      <strong>定位：</strong>独立系统，与现有 Femini 平台并行。Pixel 场景下 FeedMob 作为 attribution party，与 Femini 中作为 agency 的定位本质不同，现阶段不适合作为附加功能嵌入。<br><br>
+      传统 BI 的逻辑是"人提问 → 工具回答"，AI 原生的逻辑是"AI 主动发现 → 推动人行动"。
+    </div>
+  </div>
+  <div class="L-en" hidden>
+    <h2>An AI-Native Analytics Platform</h2>
+    <p>Goal: Build an AI-native Pixel analytics platform — not merely a query interface, but a <strong>continuously operating AI analyst</strong> that proactively surfaces anomalies and opportunities, drives action, and continuously improves its own attribution model.</p>
+    <p style="margin-bottom:10px;">The platform operates across three capability layers:</p>
+    <div class="cap-list">
+      <div class="cap-item"><div class="cap-num">1</div><div class="cap-body"><strong>Reactive Analytics — Foundation</strong><p>Business teams query Pixel data in natural language. AI dynamically generates analysis views, replacing static dashboards.</p></div></div>
+      <div class="cap-item"><div class="cap-num">2</div><div class="cap-body"><strong>Proactive Discovery — Core</strong><p>AI doesn't wait to be asked. It monitors data 24/7 and proactively pushes anomaly alerts and business opportunities — e.g. a partner's conversion rate drops sharply, an advertiser's CTV traffic spikes but budget hasn't followed (upsell signal), or a competing channel shows a new high-conversion pattern.</p></div></div>
+      <div class="cap-item"><div class="cap-num">3</div><div class="cap-body"><strong>Action-Oriented Output — Value</strong><p>AI goes beyond reporting what happened — it generates actionable outputs: auto-prepared client reports for AMs with CTV attribution vs. competitive benchmarks; outreach copy for BD targeting advertisers where competing channels underperform; attribution model tuning recommendations for Product.</p></div></div>
+    </div>
+    <div class="section-note">
+      <strong>Positioning:</strong> Standalone system, parallel to Femini. FeedMob's role as an attribution party in the Pixel context is fundamentally different from its agency role in Femini — embedding it as an add-on is not appropriate at this stage.<br><br>
+      Traditional BI: "Human asks → Tool answers." AI-Native: "AI discovers → Human acts."
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">五、技术架构</span><span class="L-en" hidden>V. Technical Architecture</span>
+  </div>
+  <div class="L-zh">
+    <h2>三层架构思路</h2>
+    <table class="data-table">
+      <thead><tr><th>层级</th><th>说明</th></tr></thead>
+      <tbody>
+        <tr><td>数据层</td><td>基于现有 PostgreSQL，传统工具开发，快速建立可复用的结构化查询框架。AI 帮助建立早期结构，而非每次重新分析原始数据。</td></tr>
+        <tr><td>MCP 智能层</td><td>通过 MCP（非静态 API）连接数据层与分析层。MCP 能自主处理复杂组合调用、异常恢复、动态参数变化——API 是死的，MCP 是活的，是走向 AI 自主化的必经基础设施。</td></tr>
+        <tr><td>AI 原生前端</td><td>不构建固定 Dashboard，由 AI 按需动态生成分析视图。自然语言提问 → MCP 取数 → 即时可视化。</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="L-en" hidden>
+    <h2>Three-Layer Architecture</h2>
+    <table class="data-table">
+      <thead><tr><th>Layer</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td>Data Layer</td><td>Built on existing PostgreSQL. Conventional tools, rapidly establishing reusable structured query frameworks. AI accelerates initial structure-building, not raw-data parsing on every query.</td></tr>
+        <tr><td>MCP Layer</td><td>Connects data to analytics via MCP (not static APIs). MCP autonomously handles complex multi-step calls, anomaly recovery, and dynamic parameters. APIs are static; MCP is adaptive — essential infrastructure for AI autonomy.</td></tr>
+        <tr><td>AI-Native Frontend</td><td>No fixed dashboard. AI dynamically generates analysis views on demand. Natural language query → MCP data fetch → instant visualization.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ⑥ -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">六、实施路径</span><span class="L-en" hidden>VI. Implementation Phases</span>
+  </div>
+  <div class="L-zh"><h2>分阶段推进</h2></div>
+  <div class="L-en" hidden><h2>Phased Rollout</h2></div>
+
+  <div class="phase">
+    <div class="phase-spine"><div class="phase-dot">1</div><div class="phase-connector"></div></div>
+    <div class="phase-body">
+      <div class="phase-badge L-zh">数据摸底</div><div class="phase-badge L-en" hidden>Data Discovery</div>
+      <h3 class="L-zh">理解 Pixel 数据结构，建立数据字典</h3>
+      <h3 class="L-en" hidden>Map Pixel data schema, build data dictionary</h3>
+      <p class="L-zh">梳理 PostgreSQL 中现有 Pixel 数据的字段、事件类型和数据量规模；确认数据完整性；与工程团队对齐数据写入逻辑；建立可复用查询框架。</p>
+      <p class="L-en" hidden>Map existing Pixel data fields, event types, and volume in PostgreSQL. Confirm data integrity. Align with engineering on ingestion logic. Build reusable query frameworks.</p>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-spine"><div class="phase-dot">2</div><div class="phase-connector"></div></div>
+    <div class="phase-body">
+      <div class="phase-badge L-zh">MCP 层开发</div><div class="phase-badge L-en" hidden>MCP Layer</div>
+      <h3 class="L-zh">将 Pixel 数据库封装为 MCP 接口</h3>
+      <h3 class="L-en" hidden>Wrap Pixel database as MCP interface</h3>
+      <p class="L-zh">覆盖核心查询场景：时间段内的事件流水、渠道归因数据、转化漏斗分析、all-ping 竞品维度切分。MCP 需支持异常处理和动态参数。</p>
+      <p class="L-en" hidden>Cover core query scenarios: event logs by time range, channel attribution data, conversion funnel analysis, all-ping competitive breakdowns. Must support anomaly handling and dynamic parameters.</p>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-spine"><div class="phase-dot core">3</div><div class="phase-connector"></div></div>
+    <div class="phase-body">
+      <div class="phase-badge core L-zh">归因模型构建 — 核心阶段</div>
+      <div class="phase-badge core L-en" hidden>Attribution Model — Core Phase</div>
+      <h3 class="L-zh">设计并验证第一版 CTV Web 端归因模型</h3>
+      <h3 class="L-en" hidden>Design and validate the first CTV web attribution model</h3>
+      <p class="L-zh">最核心、最具挑战的阶段。CTV 归因难点：用户在电视上看广告，却在另一台设备上转化，两者之间没有确定性关联。需基于 Phase 1 的数据字段（IP、User Agent、时间戳、地理位置等），设计匹配逻辑和归因规则，定义 lookback window，用真实数据反复验证假设，大量依赖 Phase 2 的 MCP 进行高效查询和交叉验证。</p>
+      <p class="L-en" hidden>The most critical and challenging phase. The CTV attribution challenge: users see ads on TV but convert on a different device, with no deterministic link. Requires designing matching logic and attribution rules based on Phase 1 data fields (IP, User Agent, timestamps, geolocation, etc.), defining lookback windows, and repeatedly validating hypotheses against real data — heavily relying on Phase 2's MCP for cross-validation.</p>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-spine"><div class="phase-dot">4</div><div class="phase-connector"></div></div>
+    <div class="phase-body">
+      <div class="phase-badge L-zh">AI 原生前端</div><div class="phase-badge L-en" hidden>AI-Native Frontend</div>
+      <h3 class="L-zh">打通"自然语言 → 数据 → 即时可视化"完整链路</h3>
+      <h3 class="L-en" hidden>Close the full loop: natural language → data → instant visualization</h3>
+      <p class="L-zh">通过 Claude 调用 MCP，由 AI 根据自然语言需求动态生成数据视图。此时前端呈现的核心内容就是 Phase 3 建立的归因结果和竞品对比分析。</p>
+      <p class="L-en" hidden>Claude calls MCP to dynamically generate data views from natural language queries. The core content is the attribution results and competitive analysis built in Phase 3.</p>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-spine"><div class="phase-dot">5</div><div class="phase-connector"></div></div>
+    <div class="phase-body">
+      <div class="phase-badge L-zh">主动洞察与行动引擎</div><div class="phase-badge L-en" hidden>Proactive Insights & Action Engine</div>
+      <h3 class="L-zh">从"人问 AI 答"升级为"AI 主动推送"</h3>
+      <h3 class="L-en" hidden>Upgrade from "human asks" to "AI proactively alerts"</h3>
+      <p class="L-zh">建立持续监测机制，AI 自动识别异常、趋势和商业机会，以告警或简报形式推送给相关角色。核心场景：partner 转化率异常检测、广告主 upsell 机会识别、竞品渠道效果变动追踪，以及自动生成可执行行动素材（客户汇报、outreach 话术等）。</p>
+      <p class="L-en" hidden>Establish continuous monitoring. AI auto-identifies anomalies, trends, and business opportunities, pushing alerts and briefings to relevant roles. Core scenarios: partner conversion anomaly detection, advertiser upsell signal identification, competitive channel tracking, and auto-generating actionable materials (client reports, outreach copy, etc.).</p>
+    </div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-spine"><div class="phase-dot">6</div></div>
+    <div class="phase-body">
+      <div class="phase-badge L-zh">归因模型自进化与产品化</div><div class="phase-badge L-en" hidden>Model Self-Evolution & Productization</div>
+      <h3 class="L-zh">模型自迭代，并探索对外服务可能性</h3>
+      <h3 class="L-en" hidden>Self-iterating model, exploring external service potential</h3>
+      <p class="L-zh">AI 持续用新数据验证和迭代归因模型——自动测试不同 lookback window、匹配规则的效果差异，推荐当前最优方案。同时探索将这套归因能力产品化，例如向广告主提供 CTV Web 端归因报告作为增值服务。</p>
+      <p class="L-en" hidden>AI continuously validates and iterates the attribution model using new data — auto-testing different lookback windows and matching rules, recommending the current optimal approach. Simultaneously explore productizing this capability, e.g. offering CTV web attribution reports to advertisers as a value-added service.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑦ -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">七、业务价值</span><span class="L-en" hidden>VII. Business Value</span>
+  </div>
+  <div class="L-zh">
+    <h2>为什么值得做</h2>
+    <table class="data-table">
+      <thead><tr><th>价值维度</th><th>具体内容</th></tr></thead>
+      <tbody>
+        <tr><td>CTV 归因能力</td><td>率先建立 Web 端 CTV 归因方案，形成差异化竞争优势，深化与 Samsung CTV、LG、Pragmatic 的合作</td></tr>
+        <tr><td>竞争情报</td><td>通过 all-ping 数据分析竞争对手 CTV 渠道的转化效果，获取有价值的市场情报</td></tr>
+        <tr><td>主动商业机会挖掘</td><td>AI 持续监测，自动识别 upsell 机会、partner 异常、竞品动向，推动 AM/BD 主动出击而非被动响应</td></tr>
+        <tr><td>归因模型 IP 化</td><td>长期积累的归因模型可成为对外服务，向广告主提供 CTV 归因报告作为增值产品</td></tr>
+        <tr><td>AI 原生实践</td><td>验证 AI 原生开发路径，积累 AI + 业务结合的第一手经验，为公司 AI 转型提供方法论</td></tr>
+        <tr><td>数据资产激活</td><td>沉睡的 Pixel 数据成为业务团队可实时使用的活性资产，支持 AM 汇报、产品决策、BD 竞品分析</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="L-en" hidden>
+    <h2>Why This Is Worth Building</h2>
+    <table class="data-table">
+      <thead><tr><th>Dimension</th><th>Details</th></tr></thead>
+      <tbody>
+        <tr><td>CTV Attribution</td><td>First-mover advantage in web-side CTV attribution, deepening partnerships with Samsung CTV, LG, and Pragmatic</td></tr>
+        <tr><td>Competitive Intelligence</td><td>Analyze competing CTV channel conversion performance through all-ping data for high-value market intelligence</td></tr>
+        <tr><td>Proactive Opportunity Mining</td><td>AI monitors continuously, auto-identifying upsell opportunities, partner anomalies, and competitive shifts — empowering AM/BD to act proactively</td></tr>
+        <tr><td>Attribution Model as IP</td><td>The accumulated attribution model can become an external service — CTV attribution reports as a value-added product for advertisers</td></tr>
+        <tr><td>AI-Native Proof-of-Concept</td><td>Validate the AI-native development path, build firsthand AI+business experience, and provide a methodology for the company's broader AI transformation</td></tr>
+        <tr><td>Data Asset Activation</td><td>Dormant Pixel data becomes a live asset for business teams — supporting AM reporting, product decisions, and BD competitive analysis</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ⑧ -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">八、团队</span><span class="L-en" hidden>VIII. Team</span>
+  </div>
+  <div class="L-zh"><h2>项目成员</h2></div>
+  <div class="L-en" hidden><h2>Project Members</h2></div>
+  <div class="team-row">
+    <div class="team-card">
+      <div class="role L-zh">项目 Owner · 策略与 AI 主导</div>
+      <div class="role L-en" hidden>Project Owner · Strategy & AI Lead</div>
+      <div class="name">Alyssa</div>
+      <p class="L-zh">项目方向、业务需求定义、AI 工具选型与集成、分析框架设计、跨团队协调</p>
+      <p class="L-en" hidden>Project direction, business requirements, AI tool selection & integration, analytics framework design, cross-team coordination</p>
+    </div>
+    <div class="team-card">
+      <div class="role L-zh">后端开发 · MCP 构建</div>
+      <div class="role L-en" hidden>Backend Dev · MCP Engineering</div>
+      <div class="name">Yongcheng</div>
+      <p class="L-zh">数据层梳理、MCP 接口开发、数据库查询优化、与 AI 前端联调</p>
+      <p class="L-en" hidden>Data layer mapping, MCP interface development, database query optimization, AI frontend integration</p>
+    </div>
+  </div>
+</div>
+
+<!-- ⑨ -->
+<div class="section">
+  <div class="section-tag">
+    <span class="L-zh">九、成功标准</span><span class="L-en" hidden>IX. Success Criteria</span>
+  </div>
+  <div class="L-zh"><h2>如何衡量这件事做成了</h2></div>
+  <div class="L-en" hidden><h2>How We Know It Worked</h2></div>
+
+  <div class="crit-group">
+    <div class="crit-label L-zh">基础能力</div><div class="crit-label L-en" hidden>Foundation</div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">可通过自然语言实时查询 Pixel 数据，无需工程师介入</span>
+      <span class="L-en" hidden>Pixel data queryable via natural language in real-time, without engineering intervention</span>
+    </div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">业务团队（AM / Product / BD）可自助使用，不依赖技术团队每次取数</span>
+      <span class="L-en" hidden>Business teams (AM/Product/BD) can self-serve without requiring engineering to pull data</span>
+    </div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">完成一套可复用的 MCP 构建实践，可迁移至其他数据资产</span>
+      <span class="L-en" hidden>Complete a replicable MCP build pattern applicable to other data assets</span>
+    </div>
+  </div>
+
+  <div class="crit-group">
+    <div class="crit-label L-zh">归因与情报</div><div class="crit-label L-en" hidden>Attribution & Intelligence</div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">形成至少一套可用的 CTV Web 端归因逻辑，经真实数据验证</span>
+      <span class="L-en" hidden>At least one viable CTV web attribution model developed and validated against real data</span>
+    </div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">能从 Pixel 数据中提取竞争对手渠道的转化对比分析</span>
+      <span class="L-en" hidden>Competitive channel conversion analysis extractable from Pixel all-ping data</span>
+    </div>
+  </div>
+
+  <div class="crit-group">
+    <div class="crit-label L-zh">主动分析与行动驱动</div><div class="crit-label L-en" hidden>Proactive Analysis & Action</div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">AI 能主动识别并推送数据异常和商业机会（upsell 信号、partner 转化异常等）</span>
+      <span class="L-en" hidden>AI proactively identifies and pushes data anomalies and business opportunities (upsell signals, partner conversion anomalies, etc.)</span>
+    </div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">能自动生成面向客户的分析素材（CTV 归因表现 vs. 竞品对比汇报等）</span>
+      <span class="L-en" hidden>Auto-generates client-facing analysis materials (CTV attribution vs. competitive benchmarks, etc.)</span>
+    </div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">归因模型可通过新数据自动验证和迭代，无需人工重新调参</span>
+      <span class="L-en" hidden>Attribution model auto-validates and iterates with new data, without manual re-tuning</span>
+    </div>
+  </div>
+
+  <div class="crit-group">
+    <div class="crit-label L-zh">战略验证</div><div class="crit-label L-en" hidden>Strategic Validation</div>
+    <div class="crit-item" onclick="this.classList.toggle('done')"><div class="crit-box"></div>
+      <span class="L-zh">验证 AI 原生分析产品形态，为后续更大范围推广提供方法论参考</span>
+      <span class="L-en" hidden>Validate the AI-native analytics product model, providing a methodology reference for broader rollout</span>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<script>
+function setLang(lang) {
+  const toEn = lang === 'en';
+  document.querySelectorAll('.L-zh').forEach(el => { el.hidden = toEn; });
+  document.querySelectorAll('.L-en').forEach(el => { el.hidden = !toEn; });
+  document.getElementById('btn-zh').classList.toggle('active', !toEn);
+  document.getElementById('btn-en').classList.toggle('active',  toEn);
+}
+</script>
+</body>
+</html>
