@@ -3,18 +3,19 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
 <title>FeedMob Pixel Analytics — 立项计划</title>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
-  --primary: #1c262f;
-  --accent:  #ea6969;
-  --accent2: #1b97be;
-  --bg:      #f6f8fa;
+  --primary: #F3B963; /* FeedMob Orange */
+  --primary-text: #D97706; /* Darker Orange for text readability */
+  --accent:  #00A99D; /* FeedMob Teal */
+  --accent2: #EA6969; /* Coral Orange */
+  --bg:      #F8FAFC;
   --card:    #ffffff;
-  --text:    #32404e;
-  --muted:   #4c5864;
-  --border:  #e1e3e5;
+  --text:    #334155; /* Neutral Dark Slate instead of gray */
+  --muted:   #64748B;
+  --border:  #E2E8F0;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -24,7 +25,7 @@ body {
 
 /* ── Top lang bar ── */
 .topbar {
-  background: var(--primary); padding: 10px 40px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent2) 100%); padding: 10px 40px;
   display: flex; align-items: center; justify-content: flex-end; gap: 12px;
   position: sticky; top: 0; z-index: 100;
 }
@@ -44,7 +45,7 @@ body {
 
 /* ── Header ── */
 header {
-  background: linear-gradient(135deg, var(--primary) 0%, #32404e 55%, var(--accent2) 100%);
+  background: var(--accent);
   color: #fff; padding: 48px 48px 40px;
 }
 .header-meta { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: .55; margin-bottom: 10px; }
@@ -59,18 +60,18 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
 .section {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 12px; padding: 32px 36px; margin-bottom: 20px;
-  box-shadow: 0 4px 14px rgba(28,38,47,.06);
+  box-shadow: 0 1px 3px rgba(0,0,0,.05);
 }
 .section-tag {
   font-size: 14px; font-weight: 800;
-  color: var(--accent); margin-bottom: 10px;
+  color: var(--primary-text); margin-bottom: 10px;
   display: flex; align-items: center; gap: 8px;
 }
 .section-tag::before {
   content: ''; display: inline-block; width: 4px; height: 16px;
-  background: var(--accent); border-radius: 2px; flex-shrink: 0;
+  background: var(--primary-text); border-radius: 2px; flex-shrink: 0;
 }
-.section h2 { font-size: 19px; font-weight: 700; color: var(--primary); margin-bottom: 14px; }
+.section h2 { font-size: 19px; font-weight: 700; color: var(--accent); margin-bottom: 14px; }
 .section p  { color: var(--text); margin-bottom: 10px; }
 .section p:last-child { margin-bottom: 0; }
 
@@ -91,23 +92,23 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
 .cap-item { display: flex; gap: 14px; padding: 14px 16px; background: var(--bg); border-radius: 8px; border: 1px solid var(--border); }
 .cap-num {
   flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%;
-  background: var(--accent2); color: #fff; font-size: 12px; font-weight: 800;
+  background: var(--primary); color: #fff; font-size: 12px; font-weight: 800;
   display: flex; align-items: center; justify-content: center; margin-top: 2px;
 }
 .cap-body { flex: 1; }
-.cap-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--primary); margin-bottom: 4px; }
+.cap-body strong { display: block; font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
 .cap-body p { font-size: 13px; color: var(--muted); line-height: 1.65; margin: 0; }
 
 /* ── Two columns ── */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
 .mini-card { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 16px 18px; }
-.mini-card h3 { font-size: 13px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+.mini-card h3 { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 8px; }
 .mini-card p  { font-size: 13px; color: var(--muted); line-height: 1.65; margin: 0; }
 
 /* ── Section note ── */
 .section-note {
   margin-top: 14px; padding: 12px 16px; border-radius: 6px;
-  background: #fff7f9; border-left: 4px solid #ea6969;
+  background: #fffde7; border-left: 4px solid #f9a825;
   font-size: 13px; color: #555; line-height: 1.7;
 }
 
@@ -130,7 +131,7 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
 .phase { display: flex; gap: 16px; }
 .phase-spine { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
 .phase-dot {
-  width: 34px; height: 34px; border-radius: 50%; background: var(--accent2);
+  width: 34px; height: 34px; border-radius: 50%; background: var(--primary);
   color: #fff; font-size: 13px; font-weight: 800;
   display: flex; align-items: center; justify-content: center;
 }
@@ -140,18 +141,18 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
 .phase-body { flex: 1; padding-bottom: 26px; padding-top: 4px; }
 .phase-badge {
   display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px;
-  text-transform: uppercase; background: #e8f5fb; color: #1b97be;
+  text-transform: uppercase; background: #eef2ff; color: #3730a3;
   padding: 2px 10px; border-radius: 20px; margin-bottom: 7px;
 }
-.phase-badge.core { background: #fff1f1; color: #ea6969; }
-.phase-body h3 { font-size: 15px; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+.phase-badge.core { background: #E6F6F5; color: var(--accent); }
+.phase-body h3 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
 .phase-body p  { font-size: 14px; color: var(--muted); line-height: 1.65; margin: 0; }
 
 /* ── Team ── */
 .team-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 .team-card { border: 1px solid var(--border); border-radius: 10px; padding: 20px 22px; background: var(--bg); }
-.team-card .role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--accent); font-weight: 700; margin-bottom: 4px; }
-.team-card .name { font-size: 19px; font-weight: 800; color: var(--primary); margin-bottom: 8px; }
+.team-card .role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--primary-text); font-weight: 700; margin-bottom: 4px; }
+.team-card .name { font-size: 19px; font-weight: 800; color: var(--accent); margin-bottom: 8px; }
 .team-card p { font-size: 13px; color: var(--muted); }
 
 /* ── Criteria ── */
@@ -166,7 +167,7 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
   display: flex; align-items: center; justify-content: center;
   background: #fff; transition: all .15s;
 }
-.crit-item.done .crit-box { background: #00b5ad; border-color: #00b5ad; }
+.crit-item.done .crit-box { background: #10b981; border-color: #10b981; }
 .crit-item.done .crit-box::after { content: '✓'; color: #fff; font-size: 11px; font-weight: 800; }
 .crit-item.done span { text-decoration: line-through; color: var(--muted); }
 .crit-item span { font-size: 14px; color: var(--text); flex: 1; }
@@ -266,7 +267,7 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
   </div>
   <div class="L-zh">
     <h2>数据沉睡在数据库里</h2>
-    <p>Pixel 每天采集的数据，目前全部存储在 PostgreSQL 数据库中，处于完全沉睡的状态：</p>
+    <p>Pixel 每天采集的数据，目前全部存储在 AWS Load Balancer Logs 中（仅能通过 Athena 查询），处于完全沉睡的状态：</p>
     <ul class="blist">
       <li>没有可视化界面</li>
       <li>没有实时查询能力</li>
@@ -277,7 +278,7 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
   </div>
   <div class="L-en" hidden>
     <h2>Data Locked in the Database</h2>
-    <p>Pixel collects data daily, all of which currently sits in a PostgreSQL database, completely dormant:</p>
+    <p>Pixel collects data daily, all of which currently sits in AWS Load Balancer Logs (queryable only via Athena), completely dormant:</p>
     <ul class="blist">
       <li>No visualization layer</li>
       <li>No real-time query capability</li>
@@ -333,7 +334,7 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
     <table class="data-table">
       <thead><tr><th>层级</th><th>说明</th></tr></thead>
       <tbody>
-        <tr><td>数据层</td><td>基于现有 PostgreSQL，传统工具开发，快速建立可复用的结构化查询框架。AI 帮助建立早期结构，而非每次重新分析原始数据。</td></tr>
+        <tr><td>数据层</td><td>基于现有 AWS Athena，传统工具开发，快速建立可复用的结构化查询框架。AI 帮助建立早期结构，而非每次重新分析原始数据。</td></tr>
         <tr><td>MCP 智能层</td><td>通过 MCP（非静态 API）连接数据层与分析层。MCP 能自主处理复杂组合调用、异常恢复、动态参数变化——API 是死的，MCP 是活的，是走向 AI 自主化的必经基础设施。</td></tr>
         <tr><td>AI 原生前端</td><td>不构建固定 Dashboard，由 AI 按需动态生成分析视图。自然语言提问 → MCP 取数 → 即时可视化。</td></tr>
       </tbody>
@@ -344,7 +345,7 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
     <table class="data-table">
       <thead><tr><th>Layer</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td>Data Layer</td><td>Built on existing PostgreSQL. Conventional tools, rapidly establishing reusable structured query frameworks. AI accelerates initial structure-building, not raw-data parsing on every query.</td></tr>
+        <tr><td>Data Layer</td><td>Built on existing AWS Athena. Conventional tools, rapidly establishing reusable structured query frameworks. AI accelerates initial structure-building, not raw-data parsing on every query.</td></tr>
         <tr><td>MCP Layer</td><td>Connects data to analytics via MCP (not static APIs). MCP autonomously handles complex multi-step calls, anomaly recovery, and dynamic parameters. APIs are static; MCP is adaptive — essential infrastructure for AI autonomy.</td></tr>
         <tr><td>AI-Native Frontend</td><td>No fixed dashboard. AI dynamically generates analysis views on demand. Natural language query → MCP data fetch → instant visualization.</td></tr>
       </tbody>
@@ -366,8 +367,8 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
       <div class="phase-badge L-zh">数据摸底</div><div class="phase-badge L-en" hidden>Data Discovery</div>
       <h3 class="L-zh">理解 Pixel 数据结构，建立数据字典</h3>
       <h3 class="L-en" hidden>Map Pixel data schema, build data dictionary</h3>
-      <p class="L-zh">梳理 PostgreSQL 中现有 Pixel 数据的字段、事件类型和数据量规模；确认数据完整性；与工程团队对齐数据写入逻辑；建立可复用查询框架。</p>
-      <p class="L-en" hidden>Map existing Pixel data fields, event types, and volume in PostgreSQL. Confirm data integrity. Align with engineering on ingestion logic. Build reusable query frameworks.</p>
+      <p class="L-zh">梳理 AWS Athena 中现有 Pixel 数据的字段、事件类型和数据量规模；确认数据完整性；与工程团队对齐数据写入逻辑；建立可复用查询框架。</p>
+      <p class="L-en" hidden>Map existing Pixel data fields, event types, and volume in AWS Athena. Confirm data integrity. Align with engineering on ingestion logic. Build reusable query frameworks.</p>
     </div>
   </div>
 
@@ -375,8 +376,8 @@ main { max-width: 860px; margin: 0 auto; padding: 36px 20px 80px; }
     <div class="phase-spine"><div class="phase-dot">2</div><div class="phase-connector"></div></div>
     <div class="phase-body">
       <div class="phase-badge L-zh">MCP 层开发</div><div class="phase-badge L-en" hidden>MCP Layer</div>
-      <h3 class="L-zh">将 Pixel 数据库封装为 MCP 接口</h3>
-      <h3 class="L-en" hidden>Wrap Pixel database as MCP interface</h3>
+      <h3 class="L-zh">将 Athena 查询封装为 MCP 接口</h3>
+      <h3 class="L-en" hidden>Wrap Athena queries as MCP interface</h3>
       <p class="L-zh">覆盖核心查询场景：时间段内的事件流水、渠道归因数据、转化漏斗分析、all-ping 竞品维度切分。MCP 需支持异常处理和动态参数。</p>
       <p class="L-en" hidden>Cover core query scenarios: event logs by time range, channel attribution data, conversion funnel analysis, all-ping competitive breakdowns. Must support anomaly handling and dynamic parameters.</p>
     </div>
